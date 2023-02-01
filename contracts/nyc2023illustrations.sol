@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 
 contract W23NYC is ERC1155, Ownable, ERC1155Burnable {
-    string public constant name = "WTest";
-    string public constant symbol = "WTEST";
+    string public constant name = "Thank You Gift for New Year Card Illusturations";
+    string public constant symbol = "W23NYCTHANKYOU";
 
     address[] mintErrorAddresses;
-    error mintedAddresses(address[] to);
+    error MintError(address[] to);
 
     constructor() ERC1155("https://raw.githubusercontent.com/wagumi/nyc2023-illustrations/main/assets/index.json") {}
 
@@ -28,7 +28,7 @@ contract W23NYC is ERC1155, Ownable, ERC1155Burnable {
 
         for (uint256 i = 0; i < accounts.length; ++i) {
             address to = accounts[i];
-            if(balanceOf(to, id) == 0) {
+            if (balanceOf(to, id) == 0) {
                 _mint(to, id, amount, data);
             } else {
                 mintErrorAddresses.push(to);
@@ -36,7 +36,7 @@ contract W23NYC is ERC1155, Ownable, ERC1155Burnable {
         }
 
         if (mintErrorAddresses.length > 0) {
-            revert mintedAddresses(mintErrorAddresses);
+            revert MintError(mintErrorAddresses);
         }
     }
 }
